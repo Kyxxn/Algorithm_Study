@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class Solution {
+    static int test;
     static public int solution(int k, int[] tangerines) {
         int answer = 0;
         HashMap<Integer, Integer> map = new HashMap<>();
