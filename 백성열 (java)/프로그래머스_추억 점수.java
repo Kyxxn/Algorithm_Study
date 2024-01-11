@@ -1,6 +1,7 @@
 import java.util.HashMap;
 
 public class Solution {
+    static int test;
     public int[] solution(String[] name, int[] yearning, String[][] photo) {
         int[] answer = new int[photo.length];
         HashMap<String,Integer> map = new HashMap<String,Integer>();
