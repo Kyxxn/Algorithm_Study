@@ -1,67 +1,62 @@
 //
-//  BOJ_1967.swift
-//  BOJ
+//  24년 겨울 알고리즘 스터디
+//  BOJ & 프로그래머스
 //
 //  Created by 박효준 on 1/10/24.
 import Foundation
 
+var n : Int = Int(readLine()!)!
+var graph : [[(Int, Int)]] = Array(repeating: [(Int, Int)](), count: n+1)
+var visited : [Bool] = Array(repeating: false, count: n+1)
 
-func solution(_ k:Int, _ tangerine:[Int]) -> Int {
-    var dic : [Int : Int] = [:]
-    var count : Int = 0
-    var tmp = k
-    for data in tangerine{
-        if dic[data] != nil {
-            if let value = dic[data]{
-                dic[data] = value + 1
-            }
-        }else{
-            dic[data] = 1
-        }
-    }
-    // 딕셔너리 완성
-    
-    var sortedDict : Array<(Int, Int)> = dic.sorted{ $0.value > $1.value }
-    for data in sortedDict{
-        tmp -= data.1
-        count += 1
-        if(tmp <= 0){
-            break
-        }
-    }
-    
-    
-    return count
+for _ in 0..<n-1{ // 0~10 11번
+    let tmp : [Int] = readLine()!.split(separator: " ").map{Int($0)!}
+    let x : Int = tmp[0]
+    let y : Int = tmp[1]
+    let weight : Int = tmp[2]
+    graph[x].append((y, weight))
+    graph[y].append((x, weight))
 }
 
-var a = solution(6, [1,3,2,5,4,5,2,3])
-print(a)
+var weightSum : Int = 0
+var rootToleaf : [Int] = Array(repeating: 0, count : n+1)
 
+func dfs(_ vertex : Int) {
+    visited[vertex] = true
+    
+    for next in graph[vertex]{
+        var nextVertex : Int = next.0
+        var nextWeight : Int = next.1
+        
+        if (!visited[nextVertex]){
+            weightSum = weightSum + nextWeight
+            dfs(nextVertex)
+            weightSum = weightSum - nextWeight
+        }else{
+            rootToleaf[vertex] = weightSum
+        }
+    }
+}
 
-//import Foundation
-//
-//func solution(_ k:Int, _ tangerine:[Int]) -> Int {
-//    var dic : [Int : Int] = [:]
-//    var count : Int = 0
-//    var tmp = k
-//    for data in tangerine{
-//        if dic[data] != nil {
-//            if let value = dic[data]{
-//                dic[data] = value + 1
-//            }
-//        }else{
-//            dic[data] = 1
-//        }
-//    }
-//    // 딕셔너리 완성
-//
-//    while(tmp > 0){
-//         if let maxValue = dic.values.max(), let keyOfMaxValue = dic.first(where: { $1 == maxValue })?.key {
-//        tmp = tmp - maxValue // 가장 큰 값을 k에서 빼기
-//        dic.removeValue(forKey: keyOfMaxValue) // 해당 키-값 쌍 삭제
-//        count += 1
-//    }
-//    }
-//
-//    return count
+dfs(1)
+// 1번 : 루트와 가장 먼 리프노드
+var weightMax : Int = rootToleaf.max()!
+var start = rootToleaf.firstIndex(of: weightMax)!
+
+// 2번 : 1번 노드와 가장 먼 리프노드
+weightSum = 0
+for i in 0...n{
+    visited[i] = false
+    rootToleaf[i] = 0
+}
+dfs(start)
+weightMax = rootToleaf.max()!
+print(weightMax)
+
+//for i in rootToleaf{
+//    print(i, terminator: " ")
+//}
+
+//for i in 0..<n{
+//    print(graph[i])
 //}
