@@ -3,7 +3,6 @@ from collections import defaultdict
 
 input = sys.stdin.readline
 
-
 def main():
     n = int(input().strip())
 
