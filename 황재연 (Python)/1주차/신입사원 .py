@@ -16,6 +16,5 @@ for _ in range(cases):
         if val[0] <= x:
             x = val[0]
         else:
-            lose += 1
-
+            lose += 1 
     print(n - (lose))
