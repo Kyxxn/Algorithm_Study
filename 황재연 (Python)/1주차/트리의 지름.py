@@ -2,13 +2,15 @@ import sys
 from collections import defaultdict
 
 input = sys.stdin.readline
+sys.setrecursionlimit(10**6)
+
 
 def main():
-    n = int(input().strip())
+    num = int(input().strip())
 
     tree = defaultdict(list)
 
-    for _ in range(n - 1):
+    for _ in range(num- 1):
         n, m, v = map(int, input().split())
         tree[n].append([m, v])
         tree[m].append([n, v])
@@ -16,12 +18,15 @@ def main():
     leafs = [leaf[0] for leaf in tree.items() if len(leaf[1]) == 1]
     discovered = []
 
+    ans = [0]*(num+1)
+
     def dfs(V, value, check=False):
         nonlocal visited  # 방문한 노드
         nonlocal leafs
         nonlocal ans
         if (not check) and V in leafs:
-            ans = max(value, ans)
+            ans[V] = value
+
         visited.append(V)
 
         for i in tree[V]:
@@ -30,11 +35,15 @@ def main():
 
             dfs(i[0], value + i[1])
 
-    ans = 0
-    for i in leafs:
-        visited = []
-        dfs(i, 0, True)
-    print(ans)
+
+    visited = []
+    dfs(1,0,True)
+    
+    visited = []
+    dfs(ans.index(max(ans)),0,True)
+    
+        #dfs(i, 0, True)
+    print(max(ans))
 
 
 main()
