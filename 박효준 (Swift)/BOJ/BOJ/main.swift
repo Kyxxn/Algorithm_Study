@@ -3,6 +3,12 @@
 //  BOJ & 프로그래머스
 //
 //  Created by 박효준 on 1/10/24.
+
+// DFS 응용 문제
+// **리프노드만 두 개를 골라야함**
+// 1. 처음 DFS를 통해 루트와 가장 먼 리프노드를 고름
+// 2. 1번 노드와 가장 거리가 먼 리프노드를 고름
+
 import Foundation
 
 var n : Int = Int(readLine()!)!
@@ -17,16 +23,18 @@ for _ in 0..<n-1{ // 0~10 11번
     graph[x].append((y, weight))
     graph[y].append((x, weight))
 }
+// 인접 리스트 완성
 
-var weightSum : Int = 0
+var weightSum : Int = 0 // 노드 - 노드간의 가중치
 var rootToleaf : [Int] = Array(repeating: 0, count : n+1)
+// 시작 노드 X에서 N개의 노드들까지 가중치를 담는 배열
 
 func dfs(_ vertex : Int) {
     visited[vertex] = true
     
     for next in graph[vertex]{
-        var nextVertex : Int = next.0
-        var nextWeight : Int = next.1
+        let nextVertex : Int = next.0
+        let nextWeight : Int = next.1
         
         if (!visited[nextVertex]){
             weightSum = weightSum + nextWeight
@@ -49,6 +57,7 @@ for i in 0...n{
     visited[i] = false
     rootToleaf[i] = 0
 }
+
 dfs(start)
 weightMax = rootToleaf.max()!
 print(weightMax)

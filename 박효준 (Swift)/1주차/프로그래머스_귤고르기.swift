@@ -1,10 +1,10 @@
 //
 //  프로그래머스 귤 고르기
+//  딕셔너리 + 정렬 문제
 //  BOJ
 //
 //  Created by 박효준 on 1/10/24.
 import Foundation
-
 
 func solution(_ k:Int, _ tangerine:[Int]) -> Int {
     var dic : [Int : Int] = [:]
@@ -20,6 +20,8 @@ func solution(_ k:Int, _ tangerine:[Int]) -> Int {
         }
     }
     // 딕셔너리 완성
+    // 정렬 전 : [(1:1), (2:2), (3:2), (4:1), (5:2)]
+    // 정렬 후 : [(2:2), (3:2), (5:2), (1:1), (4:1)] (키 순서는 상관 X)
     
     var sortedDict : Array<(Int, Int)> = dic.sorted{ $0.value > $1.value }
     for data in sortedDict{
@@ -29,7 +31,6 @@ func solution(_ k:Int, _ tangerine:[Int]) -> Int {
             break
         }
     }
-    
     
     return count
 }
