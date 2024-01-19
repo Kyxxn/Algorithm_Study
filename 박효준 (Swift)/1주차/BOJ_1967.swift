@@ -4,9 +4,11 @@
 //
 //  Created by 박효준 on 1/10/24.
 
+// DFS 응용 문제
 // **리프노드만 두 개를 골라야함**
 // 1. 처음 DFS를 통해 루트와 가장 먼 리프노드를 고름
 // 2. 1번 노드와 가장 거리가 먼 리프노드를 고름
+
 import Foundation
 
 var n : Int = Int(readLine()!)!
@@ -21,16 +23,30 @@ for _ in 0..<n-1{ // 0~10 11번
     graph[x].append((y, weight))
     graph[y].append((x, weight))
 }
+//    인접 리스트 완성
+//    []
+//    [(2, 3), (3, 2)]
+//    [(1, 3), (4, 5)]
+//    [(1, 2), (5, 11), (6, 9)]
+//    [(2, 5), (7, 1), (8, 7)]
+//    [(3, 11), (9, 15), (10, 4)]
+//    [(3, 9), (11, 6), (12, 10)]
+//    [(4, 1)]
+//    [(4, 7)]
+//    [(5, 15)]
+//    [(5, 4)]
+//    [(6, 6)]
 
-var weightSum : Int = 0
+var weightSum : Int = 0 // 노드 - 노드간의 가중치
 var rootToleaf : [Int] = Array(repeating: 0, count : n+1)
+// 시작 노드 X에서 N개의 노드들까지 가중치를 담는 배열
 
 func dfs(_ vertex : Int) {
     visited[vertex] = true
     
     for next in graph[vertex]{
-        var nextVertex : Int = next.0
-        var nextWeight : Int = next.1
+        let nextVertex : Int = next.0
+        let nextWeight : Int = next.1
         
         if (!visited[nextVertex]){
             weightSum = weightSum + nextWeight
