@@ -39,10 +39,9 @@ public class backjoon1946 {
 }
 class employee{
 
-    int test1;
     
+    int test1;
     int test2;
-
     employee(int test1, int test2){
         this.test1 = test1;
         this.test2 = test2;

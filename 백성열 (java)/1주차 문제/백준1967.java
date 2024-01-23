@@ -2,7 +2,6 @@ import java.util.Scanner;
 import java.util.Vector;
 
 public class backjoon1967 {
-    static int test;
     static Vector<Node>[] tree;
     static boolean[] visited;
     static int maxDistance = 0;
@@ -56,7 +55,9 @@ public class backjoon1967 {
 }
 
 class Node {
+
     int child;
+    
     int weight;
 
     Node(int child, int weight) {
