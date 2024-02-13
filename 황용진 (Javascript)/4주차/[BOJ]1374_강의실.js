@@ -26,8 +26,8 @@ arr.sort((a, b) => {
 let cnt = 0;
 let result = 0;
 arr.forEach((time) => {
-  cnt += time[1];
-  result = Math.max(cnt, result);
+  cnt += time[1]; // 시작시간일 경우 강의실 +1, 종료시간일 경우 강의실 -1
+  result = Math.max(cnt, result); // 매 시간마다 사용중인 강의실의 최대 갯수 설정
 });
 
 console.log(result);
