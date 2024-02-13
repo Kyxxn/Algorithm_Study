@@ -4,6 +4,7 @@
 조건이 맞으면 암호문을 출력해 준다.
 """
 
+# 백트래킹으로 푼 풀이
 import sys
 input = sys.stdin.readline
 
@@ -33,3 +34,25 @@ def func(start):
       arr.pop()  # arr에 있는 알파벳 제거
 
 func(0)
+
+
+# 조합으로 푼 풀이
+import sys
+from itertools import combinations
+input = sys.stdin.readline
+
+L, C = map(int, input().split())  # 암호의 길이와 입력받는 알파벳 갯수 입력
+words = sorted(list(input().split())) # 알파벳입력
+
+passwords = list(combinations(words, L)) # combination 함수를 이용하여 4개의 비밀번호 조합을 모두 구함
+
+for p in passwords: 
+  a,b = 0,0 # 모음, 자음의 갯수 초기화
+  for i in p:
+    if i in 'aeiou': # 모음의 갯수 
+      a += 1
+    else: # 자음의 갯수
+      b += 1
+
+  if a >= 1 and b >= 2: # 모음이 1자 이상, 자음이 2자 이상이면
+    print(''.join(p))  # 비밀번호 출력
