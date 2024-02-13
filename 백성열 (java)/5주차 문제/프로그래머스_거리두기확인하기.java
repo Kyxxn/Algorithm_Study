@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Solution {
+public class Solution {
     private char[][][] classRoom;
     private boolean[][] visited;
     private static final int[] dx = {-1, 1, 0, 0};
