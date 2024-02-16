@@ -5,40 +5,44 @@
 
 import Foundation
 
-let nm = readLine()!.split(separator: " ").map{Int($0)!}
-let n = nm[0], m = nm[1]
-var miro: [[Int]] = Array(repeating: [], count: n)
-let mx = [0,0,-1,1], my = [1,-1,0,0]
+func solution(_ n: Int, _ m: Int, _ x: Int, _ y: Int, _ r: Int, _ c: Int, _ k: Int) -> String {
+    let dx = [1, 0, 0, -1] // Down, Left, Right, Up 순서
+    let dy = [0, -1, 1, 0]
+    let ds = ["d", "l", "r", "u"]
+    var answer: String = ""
 
-for i in 0..<n {
-    let input = readLine()!.map{Int(String($0))!}
-    miro[i] = input
-}
-
-var visited: [[Bool]] = Array(repeating: Array(repeating: false, count: m), count: n)
-var distance: [[Int]] = Array(repeating: Array(repeating: 0, count: m), count: n)
-func bfs() {
-    var queue: [(Int, Int)] = []
-    queue.append((0,0))
-    visited[0][0] = true
-    distance[0][0] = 1
-    
-    while !queue.isEmpty {
-        let cur = queue.removeFirst()
+    func dfs(_ x: Int, _ y: Int, _ string: String, _ move: Int, _ n: Int, _ m: Int, _ r: Int, _ c: Int, _ k: Int) {
+        // 남은 횟수 안에 도착지까지 갈 수 없는 경우 stop
+        if k < move + abs(x - r) + abs(y - c) {
+            return
+        }
         
+        // 정답을 찾은 경우
+        if move == k && x == r && y == c {
+            answer = string
+            return
+        }
+        
+        // 사전 순으로 탐색
         for i in 0..<4 {
-            let nx = mx[i] + cur.0, ny = my[i] + cur.1
+            let nx = x + dx[i]
+            let ny = y + dy[i]
             
-            if nx >= 0 && nx < n && ny >= 0 && ny < m {
-                if !visited[nx][ny] && (miro[nx][ny] == 1){
-                    distance[nx][ny] = distance[cur.0][cur.1] + 1
-                    queue.append((nx, ny))
-                    visited[nx][ny] = true
-                }
+            if nx > 0 && nx <= n && ny > 0 && ny <= m && answer.isEmpty {
+                dfs(nx, ny, string + ds[i], move + 1, n, m, r, c, k)
             }
         }
     }
+
+    let minMove = abs(r - x) + abs(c - y) // 도착지까지의 최소 이동 횟수
+    // 최소 이동 횟수가 k보다 많거나,
+    // 최소 이동 횟수 제외한 이동 횟수가 홀 수인 경우에는 도착지에 도착 불가능
+    if minMove > k || (k - minMove) % 2 == 1 {
+        return "impossible"
+    }
+
+    dfs(x, y, "", 0, n, m, r, c, k)
+    return answer
 }
 
-bfs()
-print(distance[n-1][m-1])
+print(solution(3, 4, 2, 3, 3, 1, 5))

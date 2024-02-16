@@ -2,46 +2,48 @@
 // BOJ & 프로그래머스
 //
 // Created by 박효준 on 1/10/24.
-// DFS && 구현 && 맨해튼(허프만 ?) 거리
+// DFS
 
 import Foundation
 
-func solution(_ places:[[String]]) -> [Int] {
-    let dx = [1, -1, 0, 0, 1, 1, -1, -1, 2, -2, 0, 0] // 상하좌우 + 대각선 + 2칸 상하좌우
-    let dy = [0, 0, 1, -1, 1, -1, 1, -1, 0, 0, 2, -2]
-    var answer: [Int] = []
+func solution(_ n: Int, _ m: Int, _ x: Int, _ y: Int, _ r: Int, _ c: Int, _ k: Int) -> String {
+    let dx = [1, 0, 0, -1] // Down, Left, Right, Up 순서
+    let dy = [0, -1, 1, 0]
+    let ds = ["d", "l", "r", "u"]
+    var answer: String = ""
 
-    for place in places {
-        var room = place.map { Array($0) }
-        var isSafe = 1
-
-        outerLoop: for i in 0..<5 {
-            for j in 0..<5 where room[i][j] == "P" {
-                for k in 0..<12 {
-                    let nx = i + dx[k]
-                    let ny = j + dy[k]
-
-                    if nx >= 0 && nx < 5 && ny >= 0 && ny < 5 {
-                        if k < 8 { // 대각선 포함 1칸 이동
-                            if room[nx][ny] == "P" {
-                                if !(k >= 4 && room[i][ny] == "X" && room[nx][j] == "X") {
-                                    isSafe = 0
-                                    break outerLoop
-                                }
-                            }
-                        } else if room[nx][ny] == "P" { // 2칸 이동
-                            if (k == 8 || k == 9) && room[(i + nx) / 2][j] != "X" || // 상하
-                                (k == 10 || k == 11) && room[i][(j + ny) / 2] != "X" { // 좌우
-                                isSafe = 0
-                                break outerLoop
-                            }
-                        }
-                    }
-                }
+    func dfs(_ x: Int, _ y: Int, _ string: String, _ move: Int, _ n: Int, _ m: Int, _ r: Int, _ c: Int, _ k: Int) {
+        // 남은 횟수 안에 도착지까지 갈 수 없는 경우 stop
+        if k < move + abs(x - r) + abs(y - c) {
+            return
+        }
+        
+        // 정답을 찾은 경우
+        if move == k && x == r && y == c {
+            answer = string
+            return
+        }
+        
+        // 사전 순으로 탐색
+        for i in 0..<4 {
+            let nx = x + dx[i]
+            let ny = y + dy[i]
+            
+            if nx > 0 && nx <= n && ny > 0 && ny <= m && answer.isEmpty {
+                dfs(nx, ny, string + ds[i], move + 1, n, m, r, c, k)
             }
         }
-        answer.append(isSafe)
     }
 
+    let minMove = abs(r - x) + abs(c - y) // 도착지까지의 최소 이동 횟수
+    // 최소 이동 횟수가 k보다 많거나,
+    // 최소 이동 횟수 제외한 이동 횟수가 홀 수인 경우에는 도착지에 도착 불가능
+    if minMove > k || (k - minMove) % 2 == 1 {
+        return "impossible"
+    }
+
+    dfs(x, y, "", 0, n, m, r, c, k)
     return answer
 }
+
+print(solution(3, 4, 2, 3, 3, 1, 5))
