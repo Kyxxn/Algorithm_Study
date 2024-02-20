@@ -20,7 +20,6 @@ def solution(numbers):
 
     return answer[::-1]
 
-
 numbers = [1, 5, 1, 1, 1, 3, 7]
 
 print(solution(numbers))
