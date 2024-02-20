@@ -28,13 +28,15 @@ function drop(arr) {
 
     while (x >= 0) {
       if (arr[x][y] === ".") {
-        empty[pIndex++] = [x, y];
+        empty[pIndex++] = [x, y]; //   . . . . . .
       } else {
+        //   . . . . . .
         if (cIndex < pIndex) {
-          const [ex, ey] = empty[cIndex++];
-          arr[ex][ey] = arr[x][y];
-          arr[x][y] = ".";
-          empty[pIndex++] = [x, y];
+          //   . . . . . .
+          const [ex, ey] = empty[cIndex++]; //   . . . . . .
+          arr[ex][ey] = arr[x][y]; //   . o o o o o
+          arr[x][y] = "."; //   . . o o o o
+          empty[pIndex++] = [x, y]; //   o . o o o o
         }
       }
       [x, y] = [x - 1, y];
@@ -42,6 +44,7 @@ function drop(arr) {
   }
 }
 
+// 탐색하면서 블럭을 제거하는 함수
 function bfs(x, y, arr) {
   const block = [[x, y]];
   const queue = [[x, y]];

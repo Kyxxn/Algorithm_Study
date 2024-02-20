@@ -6,6 +6,11 @@ const N = Number(input[0]);
 
 const arr = input[1].split(" ").map(Number);
 
+// ax + b
+// a = 2, b = 1
+// 3
+// 3 7 11 B
+
 // 수열의 길이가 1일 경우
 if (N === 1) {
   console.log("A");
@@ -24,6 +29,7 @@ if (N === 2) {
 }
 // 수열의 길이가 3 이상일 경우
 else if (N >= 3) {
+  // ax + b
   let a = 0,
     b = 0;
   let flag = true;
